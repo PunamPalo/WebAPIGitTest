@@ -1,0 +1,117 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/jquery/jquery-1.10.2.min.js"></script>
+
+    <script>
+
+       
+        $(document).ready(function () {
+            // to call API
+
+            var arr = [];
+          
+            var ttlsum = 0;
+            $("#btnttl").click(function () {
+                $('.total').each(function () {
+                        ttlsum += parseInt($(this).text());
+                });
+
+                $("#ttlsum").text("$" + ttlsum);
+
+                //  -----API Call ----------//
+                // showed both using API and calling by JSON and using complete jquery  //
+
+                var product = $("#product").val();
+                var qty = $("#qty").val();
+                var price = $("#price").val();
+
+              
+
+                //$.getJSON("/api/CalculatePrice?product="+product+"&qty="+qty+"&price="+price,function(data){
+                //    $("#amount").text("$" + data);
+                //})
+                
+                
+
+            })
+
+
+            var id = 0;
+            // To add new row after click on add//
+            $("#btnadd").click(function () {
+                id++;
+
+                $("#tblAddedrows").append($("#trDetails").clone());
+                $("#tblAddedrows #trDetails").attr('id', 'trDetails_' + id)
+                $('#tblAddedrows #tdbtn').hide();
+                $("#tblAddedrows #trDetails").addClass('_addedrows');
+                $("#tblAddedrows #trDetails_" + id).find('input[type="text"]').val('');
+                $("#tblAddedrows #qty").addClass('_addedqty');
+                $("#tblAddedrows #price").addClass('_addedprice');
+                $("#tblAddedrows #trDetails_" + id).find("#amount").html('');
+                $("#tblAddedrows #amount").addClass('total');
+
+            })
+
+            //// --------- calculaton ---------////////
+
+            $(document).on("change", "._addedprice", function () {
+                var quantity = $(this).parent().parent().find('._addedqty').val();
+                var price = $(this).val();
+                $("#trDetails_" + id).find('.total').text( quantity * price
+            });
+
+
+
+            $(".price").change(function () {
+                var qty = $(this).parent().parent().find('.qty').val();
+                var price = $(this).val();
+                $("#trDetails").find('#amount').text( qty * price
+            });
+        })
+
+
+    </script>
+
+
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Price</td>
+
+            </tr>
+            <tr id="trDetails">
+                <td><input type="text" id="product" /></td>
+                <td><input type="text" id="qty" class="qty" /></td>
+                <td class="tprice"><input type="text" id="price" class="price" /></td>
+                <td><span id="amount" class="total"></span></td>
+                <td id="tdbtn"><button id="btnadd">Add</button></td>
+            </tr>
+
+
+        </table>
+        <table id="tblAddedrows"></table>
+        <table>
+            <tr>
+                <td><button id="btnttl">Total</button></td>
+                @*<td>Total Amount</td>*@
+                <td></td>
+                <td><span id="ttlsum"> </span></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
