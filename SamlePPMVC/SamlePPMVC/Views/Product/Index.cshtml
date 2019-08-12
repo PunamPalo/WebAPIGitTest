@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<body>
+
+    <h2>Index</h2>
+
+    <input type="text" id="txtProducts" />
+    <input type="text" placeholder="$ Total Amount" id="txtTtlAmount" readonly />
+    <input type="button" id="submit" value="submit" /> 
+
+   
+</body>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script>
+    $('#submit').click(function () {
+        var items = $('#txtProducts').val();
+        if (items == "") {
+            $('#txtTtlAmount').val("");
+            alert("Please enter Product");            
+            return false;
+        }
+        
+        $.ajax({
+            type: 'GET',
+            url: '/Product/CalculateBill',
+            data: { items: items },
+            success: function (data) {
+                $('#txtTtlAmount').val(data);
+            }
+        });
+    })
+
+
+    $('#txtProducts').keypress(function (e) {
+        var regex = new RegExp("^[a-zA-Z]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (regex.test(str)) {
+            return true;
+        }
+        else {
+            e.preventDefault();
+            alert('Please Enter Alphabate');
+            return false;
+        }
+    });
+
+    
+</script>

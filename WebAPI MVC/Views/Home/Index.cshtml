@@ -18,10 +18,17 @@
 
             var arr = [];
           
-            var ttlsum = 0;
+           
             $("#btnttl").click(function () {
+                var ttlsum = 0;
                 $('.total').each(function () {
+                    if ($(this).text() == "") {
+                        ttlsum += 0;
+                    }
+                    else {
                         ttlsum += parseInt($(this).text());
+                    }
+                       
                 });
 
                 $("#ttlsum").text("$" + ttlsum);
@@ -66,7 +73,7 @@
             $(document).on("change", "._addedprice", function () {
                 var quantity = $(this).parent().parent().find('._addedqty').val();
                 var price = $(this).val();
-                $("#trDetails_" + id).find('.total').text( quantity * price
+                $("#trDetails_" + id).find('.total').text(quantity * price);
             });
 
 
@@ -74,7 +81,7 @@
             $(".price").change(function () {
                 var qty = $(this).parent().parent().find('.qty').val();
                 var price = $(this).val();
-                $("#trDetails").find('#amount').text( qty * price
+                $("#trDetails").find('#amount').text( qty * price);
             });
         })
 
